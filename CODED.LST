@@ -1,0 +1,782 @@
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 1
+
+
+
+
+
+       MCS-51 Family Macro Assembler   A S E M - 5 1   V 1.3
+       =====================================================
+
+
+
+	Source File:	E:\DATA APLIKASI\Door lock system using seven segment display\coded.asm
+	Object File:	E:\DATA APLIKASI\Door lock system using seven segment display\coded.hex
+	List File:	E:\DATA APLIKASI\Door lock system using seven segment display\coded.lst
+
+
+
+ Line  I  Addr  Code            Source
+
+    1:		N      0000	org 00h
+    2:	  0000	75 38 00	mov 56,#0
+    3:	  0003	75 90 FF	mov p1,#0ffh
+    4:	  0006	75 B0 00	mov p3,#00h
+    5:	  0009	75 A0 00	mov p2,#00h
+    6:	  000C	75 80 00	mov p0,#00h
+    7:
+    8:
+    9:
+   10:
+   11:	  000F			start:;code
+   12:	  000F	12 02 C5	call space
+   13:	  0012	12 03 19	call shiftl
+   14:	  0015	12 02 D1	call letc
+   15:	  0018	12 03 19	call shiftl
+   16:	  001B	12 02 F9	call leto
+   17:	  001E	12 03 19	call shiftl
+   18:	  0021	12 02 D5	call letd
+   19:	  0024	12 03 19	call shiftl
+   20:	  0027	12 02 D9	call lete
+   21:	  002A	12 03 19	call shiftl
+   22:	  002D	12 02 C5	call space
+   23:	  0030	12 03 19	call shiftl
+   24:	  0033	12 03 2C	call screen
+   25:
+   26:
+   27:
+   28:
+   29:
+   30:	  0036			startup:
+   31:
+   32:	  0036	20 A1 50	jb p2.1,enter
+   33:	  0039	20 A2 3F	jb p2.2,select
+   34:	  003C	20 A3 08	jb p2.3,up
+   35:	  003F	20 A0 1F	jb p2.0,down
+   36:	  0042	12 03 2C	call screen
+   37:	  0045	80 EF		jmp startup
+   38:
+   39:
+   40:
+   41:	  0047			up:
+   42:	  0047	E5 38		mov a,56
+   43:	  0049	B4 09 0B	cjne a,#9, emeka
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 2
+
+
+
+ Line  I  Addr  Code            Source
+
+   44:	  004C	75 38 00	mov 56, #0
+   45:	  004F	12 02 48	call decoder
+   46:	  0052	12 02 38	call release
+   47:	  0055	80 DF		jmp startup
+   48:
+   49:	  0057			emeka:
+   50:	  0057	05 38		inc 56
+   51:	  0059	12 02 48	call decoder
+   52:	  005C	12 02 38	call release
+   53:	  005F	80 D5		jmp startup
+   54:
+   55:
+   56:	  0061			down:
+   57:	  0061	E5 38		mov a, 56
+   58:	  0063	B4 00 0B	cjne a,#0, rex
+   59:	  0066	75 38 09	mov 56,#9
+   60:	  0069	12 02 48	call decoder
+   61:	  006C	12 02 38	call release
+   62:	  006F	80 C5		jmp startup
+   63:
+   64:	  0071			rex:
+   65:	  0071	15 38		dec 56
+   66:	  0073	12 02 48	call decoder
+   67:	  0076	12 02 38	call release
+   68:	  0079	80 BB		jmp startup
+   69:
+   70:
+   71:
+   72:
+   73:
+   74:	  007B			select:
+   75:	  007B	12 02 C5	call space
+   76:	  007E	12 03 19	call shiftl
+   77:	  0081	75 38 00	mov 56,#0
+   78:	  0084	12 02 38	call release
+   79:	  0087	80 AD		jmp startup
+   80:
+   81:	  0089			enter:;place to encode your code,code;224455
+   82:	  0089	E5 1E		mov a,30
+   83:	  008B	B4 24 1C	cjne a,#00100100b,ad
+   84:
+   85:	  008E	E5 1F		mov a,31
+   86:	  0090	B4 24 17	cjne a,#00100100b,ad
+   87:
+   88:	  0093	E5 20		mov a,32
+   89:	  0095	B4 24 12	cjne a,#00100100b,ad
+   90:
+   91:	  0098	E5 21		mov a,33
+   92:	  009A	B4 24 0D	cjne a,#00100100b,ad
+   93:
+   94:	  009D	E5 22		mov a,34
+   95:	  009F	B4 24 08	cjne a,#00100100b,ad
+   96:
+   97:	  00A2	E5 23		mov a,35
+   98:	  00A4	B4 24 03	cjne a,#00100100b,ad
+   99:
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 3
+
+
+
+ Line  I  Addr  Code            Source
+
+  100:	  00A7	02 01 61	jmp ag
+  101:
+  102:
+  103:
+  104:	  00AA			ad:  ;acess denied
+  105:	  00AA	C2 B7		clr p3.7
+  106:	  00AC	12 02 C9	call leta
+  107:	  00AF	12 03 19	call shiftl
+  108:	  00B2	12 03 7B	call play1
+  109:	  00B5	12 02 D1	call letc
+  110:	  00B8	12 03 19	call shiftl
+  111:	  00BB	12 03 7B	call play1
+  112:	  00BE	12 02 D1	call letc
+  113:	  00C1	12 03 19	call shiftl
+  114:	  00C4	12 03 7B	call play1
+  115:	  00C7	12 02 D9	call lete
+  116:	  00CA	12 03 19	call shiftl
+  117:	  00CD	12 03 7B	call play1
+  118:	  00D0	12 03 09	call lets
+  119:	  00D3	12 03 19	call shiftl
+  120:	  00D6	12 03 7B	call play1
+  121:	  00D9	12 03 19	call shiftl
+  122:	  00DC	12 03 7B	call play1
+  123:	  00DF	12 02 C5	call space
+  124:	  00E2	12 03 19	call shiftl
+  125:	  00E5	12 03 7B	call play1
+  126:	  00E8	12 02 D5	call letd
+  127:	  00EB	12 03 19	call shiftl
+  128:	  00EE	12 03 7B	call play1
+  129:	  00F1	12 02 D9	call lete
+  130:	  00F4	12 03 19	call shiftl
+  131:	  00F7	12 03 7B	call play1
+  132:	  00FA	12 02 F5	call letn
+  133:	  00FD	12 03 19	call shiftl
+  134:	  0100	12 03 7B	call play1
+  135:	  0103	12 02 E9	call leti
+  136:	  0106	12 03 19	call shiftl
+  137:	  0109	12 03 7B	call play1
+  138:	  010C	12 02 D9	call lete
+  139:	  010F	12 03 19	call shiftl
+  140:	  0112	12 03 7B	call play1
+  141:	  0115	12 02 D5	call letd
+  142:	  0118	12 03 19	call shiftl
+  143:	  011B	12 03 7B	call play1
+  144:	  011E	12 02 C5	call space
+  145:	  0121	12 03 19	call shiftl
+  146:	  0124	12 03 7B	call play1
+  147:	  0127	12 02 C5	call space
+  148:	  012A	12 03 19	call shiftl
+  149:	  012D	12 03 7B	call play1
+  150:	  0130	12 02 C5	call space
+  151:	  0133	12 03 19	call shiftl
+  152:	  0136	12 03 7B	call play1
+  153:	  0139	12 02 C5	call space
+  154:	  013C	12 03 19	call shiftl
+  155:	  013F	12 03 7B	call play1
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 4
+
+
+
+ Line  I  Addr  Code            Source
+
+  156:	  0142	12 02 C5	call space
+  157:	  0145	12 03 19	call shiftl
+  158:	  0148	12 03 7B	call play1
+  159:	  014B	12 02 C5	call space
+  160:	  014E	12 03 19	call shiftl
+  161:	  0151	12 03 7B	call play1
+  162:	  0154	12 02 C5	call space
+  163:	  0157	12 03 19	call shiftl
+  164:	  015A	12 03 7B	call play1
+  165:	  015D	D2 B7		setb p3.7
+  166:	  015F	01 0F		jmp start
+  167:
+  168:	  0161			ag:;acess granted
+  169:
+  170:	  0161	12 02 C9	call leta
+  171:	  0164	12 03 19	call shiftl
+  172:	  0167	12 03 7B	call play1
+  173:	  016A	12 02 D1	call letc
+  174:	  016D	12 03 19	call shiftl
+  175:	  0170	12 03 7B	call play1
+  176:	  0173	12 02 D1	call letc
+  177:	  0176	12 03 19	call shiftl
+  178:	  0179	12 03 7B	call play1
+  179:	  017C	12 02 D9	call lete
+  180:	  017F	12 03 19	call shiftl
+  181:	  0182	12 03 7B	call play1
+  182:	  0185	12 03 09	call lets
+  183:	  0188	12 03 19	call shiftl
+  184:	  018B	12 03 7B	call play1
+  185:	  018E	12 03 09	call lets
+  186:	  0191	12 03 19	call shiftl
+  187:	  0194	12 03 7B	call play1
+  188:	  0197	12 02 C5	call space
+  189:	  019A	12 03 19	call shiftl
+  190:	  019D	12 03 7B	call play1
+  191:	  01A0	12 02 E1	call letg
+  192:	  01A3	12 03 19	call shiftl
+  193:	  01A6	12 03 7B	call play1
+  194:	  01A9	12 03 05	call letr
+  195:	  01AC	12 03 19	call shiftl
+  196:	  01AF	12 03 7B	call play1
+  197:	  01B2	12 02 C9	call leta
+  198:	  01B5	12 03 19	call shiftl
+  199:	  01B8	12 03 7B	call play1
+  200:	  01BB	12 02 F5	call letn
+  201:	  01BE	12 03 19	call shiftl
+  202:	  01C1	12 03 7B	call play1
+  203:	  01C4	12 03 0D	call lett
+  204:	  01C7	12 03 19	call shiftl
+  205:	  01CA	12 03 7B	call play1
+  206:	  01CD	12 02 D9	call lete
+  207:	  01D0	12 03 19	call shiftl
+  208:	  01D3	12 03 7B	call play1
+  209:	  01D6	12 02 D5	call letd
+  210:	  01D9	12 03 19	call shiftl
+  211:	  01DC	12 03 7B	call play1
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 5
+
+
+
+ Line  I  Addr  Code            Source
+
+  212:	  01DF	12 02 C5	call space
+  213:	  01E2	12 03 19	call shiftl
+  214:	  01E5	12 03 7B	call play1
+  215:	  01E8	12 02 C5	call space
+  216:	  01EB	12 03 19	call shiftl
+  217:	  01EE	12 03 7B	call play1
+  218:	  01F1	12 02 C5	call space
+  219:	  01F4	12 03 19	call shiftl
+  220:	  01F7	12 03 7B	call play1
+  221:	  01FA	12 02 C5	call space
+  222:	  01FD	12 03 19	call shiftl
+  223:	  0200	12 03 7B	call play1
+  224:	  0203	12 02 C5	call space
+  225:	  0206	12 03 19	call shiftl
+  226:	  0209	12 03 7B	call play1
+  227:	  020C	12 02 C5	call space
+  228:	  020F	12 03 19	call shiftl
+  229:	  0212	12 03 7B	call play1
+  230:	  0215	12 02 C5	call space
+  231:	  0218	12 03 19	call shiftl
+  232:	  021B	12 03 7B	call play1
+  233:
+  234:	  021E			ag2: ;oning p1.7
+  235:	  021E	12 02 C5	call space
+  236:	  0221	12 03 19	call shiftl
+  237:	  0224	D2 97		setb p1.7
+  238:	  0226	D2 97		setb p1.7
+  239:	  0228	12 02 F9	call leto
+  240:	  022B	12 03 19	call shiftl
+  241:	  022E	12 02 F5	call letn
+  242:	  0231	12 03 19	call shiftl
+  243:	  0234	D2 97		setb p1.7
+  244:	  0236	80 E6		jmp ag2
+  245:
+  246:
+  247:
+  248:
+  249:
+  250:
+  251:	  0238			release:
+  252:	  0238	12 03 2C	wait: call screen
+  253:	  023B	20 A3 FA	jb p2.3,wait
+  254:	  023E	20 A2 F7	jb p2.2,wait
+  255:	  0241	20 A1 F4	jb p2.1,wait
+  256:	  0244	20 A0 F1	jb p2.0,wait
+  257:	  0247	22		ret
+  258:
+  259:
+  260:
+  261:	  0248			decoder:
+  262:	  0248	E5 38		mov a,56
+  263:	  024A	B4 00 04	cjne a,#0,decode1
+  264:	  024D	75 23 40	mov 35,#01000000b
+  265:	  0250	22		ret
+  266:	  0251			decode1:
+  267:	  0251	E5 38		mov a,56
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 6
+
+
+
+ Line  I  Addr  Code            Source
+
+  268:	  0253	B4 01 04	cjne a,#1,decode2
+  269:	  0256	75 23 79	mov 35,#01111001b
+  270:	  0259	22		ret
+  271:	  025A			decode2:
+  272:	  025A	E5 38		mov a,56
+  273:	  025C	B4 02 04	cjne a,#2,decode3
+  274:	  025F	75 23 24	mov 35,#00100100b
+  275:	  0262	22		ret
+  276:	  0263			decode3:
+  277:	  0263	E5 38		mov a,56
+  278:	  0265	B4 03 04	cjne a,#3,decode4
+  279:	  0268	75 23 30	mov 35,#00110000b
+  280:	  026B	22		ret
+  281:	  026C			decode4:
+  282:	  026C	E5 38		mov a,56
+  283:	  026E	B4 04 04	cjne a,#4,decode5
+  284:	  0271	75 23 19	mov 35,#00011001b
+  285:	  0274	22		ret
+  286:	  0275			decode5:
+  287:	  0275	E5 38		mov a,56
+  288:	  0277	B4 05 04	cjne a,#5,decode6
+  289:	  027A	75 23 12	mov 35,#00010010b
+  290:	  027D	22		ret
+  291:
+  292:	  027E			decode6:
+  293:	  027E	E5 38		mov a,56
+  294:	  0280	B4 06 04	cjne a,#6,decode7
+  295:	  0283	75 23 02	mov 35,#00000010b
+  296:	  0286	22		ret
+  297:
+  298:	  0287			decode7:
+  299:	  0287	E5 38		mov a,56
+  300:	  0289	B4 07 04	cjne a,#7,decode8
+  301:	  028C	75 23 78	mov 35,#01111000b
+  302:	  028F	22		ret
+  303:
+  304:	  0290			decode8:
+  305:	  0290	E5 38		mov a,56
+  306:	  0292	B4 08 04	cjne a,#8,decode9
+  307:	  0295	75 23 00	mov 35,#00000000b
+  308:	  0298	22		ret
+  309:
+  310:	  0299			decode9:
+  311:	  0299	75 23 10	mov 35,#00010000b
+  312:	  029C	22		ret
+  313:
+  314:				;alphabet and alphanumerical codeing
+  315:	  029D			num0:
+  316:	  029D	75 24 40	mov 36,#01000000b
+  317:	  02A0	22		ret
+  318:
+  319:	  02A1			num1:
+  320:	  02A1	75 24 79	mov 36,#01111001b
+  321:	  02A4	22		ret
+  322:
+  323:	  02A5			num2:
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 7
+
+
+
+ Line  I  Addr  Code            Source
+
+  324:	  02A5	75 24 24	mov 36,#00100100b
+  325:	  02A8	22		ret
+  326:
+  327:	  02A9			num3:
+  328:
+  329:	  02A9	75 24 30	mov 36,#00110000b
+  330:	  02AC	22		ret
+  331:
+  332:	  02AD			num4:
+  333:	  02AD	75 24 19	mov 36,#00011001b
+  334:	  02B0	22		ret
+  335:
+  336:	  02B1			num5:
+  337:	  02B1	75 24 12	mov 36,#00010010b
+  338:	  02B4	22		ret
+  339:
+  340:	  02B5			num6:
+  341:	  02B5	75 24 02	mov 36,#00000010b
+  342:	  02B8	22		ret
+  343:
+  344:	  02B9			num7:
+  345:	  02B9	75 24 78	mov 36,#01111000b
+  346:	  02BC	22		ret
+  347:
+  348:	  02BD			num8:
+  349:	  02BD	75 24 00	mov 36,#00000000b
+  350:	  02C0	22		ret
+  351:
+  352:	  02C1			num9:
+  353:	  02C1	75 24 10	mov 36,#00010000b
+  354:	  02C4	22		ret
+  355:
+  356:	  02C5			space:
+  357:	  02C5	75 24 7F	mov 36,#01111111b
+  358:	  02C8	22		ret
+  359:
+  360:
+  361:	  02C9			leta:
+  362:	  02C9	75 24 08	mov 36,#00001000b
+  363:	  02CC	22		ret
+  364:
+  365:	  02CD			letb:
+  366:	  02CD	75 24 03	mov 36,#00000011b
+  367:	  02D0	22		ret
+  368:
+  369:	  02D1			letc:
+  370:	  02D1	75 24 46	mov 36,#01000110b
+  371:	  02D4	22		ret
+  372:
+  373:	  02D5			letd:
+  374:	  02D5	75 24 21	mov 36,#00100001b
+  375:	  02D8	22		ret
+  376:
+  377:	  02D9			lete:
+  378:	  02D9	75 24 06	mov 36,#00000110b
+  379:	  02DC	22		ret
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 8
+
+
+
+ Line  I  Addr  Code            Source
+
+  380:
+  381:	  02DD			letf:
+  382:	  02DD	75 24 0E	mov 36,#00001110b
+  383:	  02E0	22		ret
+  384:
+  385:	  02E1			letg:
+  386:	  02E1	75 24 10	mov 36,#00010000b
+  387:	  02E4	22		ret
+  388:
+  389:	  02E5			leth:
+  390:	  02E5	75 24 0B	mov 36,#00001011b
+  391:	  02E8	22		ret
+  392:
+  393:	  02E9			leti:
+  394:	  02E9	75 24 79	mov 36,#01111001b
+  395:	  02EC	22		ret
+  396:
+  397:	  02ED			letj:
+  398:	  02ED	75 24 71	mov 36,#01110001b
+  399:	  02F0	22		ret
+  400:
+  401:	  02F1			letl:
+  402:	  02F1	75 24 47	mov 36,#01000111b
+  403:	  02F4	22		ret
+  404:
+  405:	  02F5			letn:
+  406:	  02F5	75 24 48	mov 36,#01001000b
+  407:	  02F8	22		ret
+  408:
+  409:	  02F9			leto:
+  410:	  02F9	75 24 40	mov 36,#01000000b
+  411:	  02FC	22		ret
+  412:
+  413:	  02FD			letp:
+  414:	  02FD	75 24 0C	mov 36,#00001100b
+  415:	  0300	22		ret
+  416:
+  417:	  0301			letq:
+  418:	  0301	75 24 18	mov 36,#00011000b
+  419:	  0304	22		ret
+  420:
+  421:	  0305			letr:
+  422:	  0305	75 24 4E	mov 36,#01001110b
+  423:	  0308	22		ret
+  424:
+  425:	  0309			lets:
+  426:	  0309	75 24 12	mov 36,#00010010b
+  427:	  030C	22		ret
+  428:
+  429:	  030D			lett:
+  430:	  030D	75 24 07	mov 36,#00000111b
+  431:	  0310	22		ret
+  432:
+  433:	  0311			letu:
+  434:	  0311	75 24 41	mov 36,#01000001b
+  435:	  0314	22		ret
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 9
+
+
+
+ Line  I  Addr  Code            Source
+
+  436:
+  437:	  0315			lety:
+  438:	  0315	75 24 11	mov 36,#00010001b
+  439:	  0318	22		ret
+  440:
+  441:
+  442:
+  443:	  0319			shiftl:
+  444:	  0319	85 1F 1E	mov 30,31
+  445:	  031C	85 20 1F	mov 31,32
+  446:	  031F	85 21 20	mov 32,33
+  447:	  0322	85 22 21	mov 33,34
+  448:	  0325	85 23 22	mov 34,35
+  449:	  0328	85 24 23	mov 35,36
+  450:	  032B	22		ret
+  451:
+  452:
+  453:	  032C			screen:
+  454:	  032C	85 1E 90	mov p1,30
+  455:	  032F	12 03 89	call clock
+  456:	  0332	D2 B0		setb p3.0
+  457:	  0334	12 03 90	call delay
+  458:	  0337	C2 B0		clr p3.0
+  459:
+  460:	  0339	85 1F 90	mov p1,31
+  461:	  033C	12 03 89	call clock
+  462:	  033F	D2 B1		setb p3.1
+  463:	  0341	12 03 90	call delay
+  464:	  0344	C2 B1		clr p3.1
+  465:
+  466:	  0346	85 20 90	mov p1,32
+  467:	  0349	12 03 89	call clock
+  468:	  034C	D2 B2		setb p3.2
+  469:	  034E	12 03 90	call delay
+  470:	  0351	C2 B2		clr p3.2
+  471:
+  472:	  0353	85 21 90	mov p1,33
+  473:	  0356	12 03 89	call clock
+  474:	  0359	D2 B3		setb p3.3
+  475:	  035B	12 03 90	call delay
+  476:	  035E	C2 B3		clr p3.3
+  477:
+  478:	  0360	85 22 90	mov p1,34
+  479:	  0363	12 03 89	call clock
+  480:	  0366	D2 B4		setb p3.4
+  481:	  0368	12 03 90	call delay
+  482:	  036B	C2 B4		clr p3.4
+  483:
+  484:	  036D	85 23 90	mov p1,35
+  485:	  0370	12 03 89	call clock
+  486:	  0373	D2 B5		setb p3.5
+  487:	  0375	12 03 90	call delay
+  488:	  0378	C2 B5		clr p3.5
+  489:
+  490:	  037A	22		ret
+  491:
+
+ASEM-51 V1.3                                        Copyright (c) 2002 by W.W. Heinz                                         PAGE 10
+
+
+
+ Line  I  Addr  Code            Source
+
+  492:	  037B			play1:
+  493:	  037B	12 03 82	call play
+  494:	  037E	12 03 90	call delay
+  495:	  0381	22		ret
+  496:
+  497:	  0382			play:
+  498:	  0382	78 64			mov r0,#100
+  499:	  0384	71 2C		jos:	call screen
+  500:	  0386	D8 FC			djnz r0,jos
+  501:	  0388	22			ret
+  502:
+  503:	  0389			clock:
+  504:	  0389	C2 B7			clr p3.7
+  505:	  038B	D2 B7			setb p3.7
+  506:	  038D	C2 B7			clr p3.7
+  507:	  038F	22			ret
+  508:
+  509:
+  510:	  0390			delay:
+  511:	  0390	79 FF			mov r1,#255
+  512:	  0392	00		okija:	nop
+  513:	  0393	D9 FD			djnz r1,okija
+  514:	  0395	22			ret
+  515:
+  516:
+  517:
+  518:
+  519:
+  520:
+  521:
+  522:
+  523:
+  524:
+  525:
+  526:				end
+  527:
+  528:
+
+
+
+
+
+                     register banks used:  ---
+
+                     no errors
+
+
+
+
+ASEM-51 V1.3                                        Copyright (c) 2002 by W.W. Heinz                                         PAGE 11
+
+
+
+
+
+	       L I S T   O F   S Y M B O L S
+	       =============================
+
+
+SYMBOL				  TYPE     VALUE	LINE
+------------------------------------------------------------
+??ASEM_51			  NUMBER    8051
+??VERSION			  NUMBER    0130
+AC				  BIT	      D6
+ACC				  DATA	      E0
+AD				  CODE	    00AA	 104
+AG				  CODE	    0161	 168
+AG2				  CODE	    021E	 234
+B				  DATA	      F0
+CLOCK				  CODE	    0389	 503
+CY				  BIT	      D7
+DECODE1				  CODE	    0251	 266
+DECODE2				  CODE	    025A	 271
+DECODE3				  CODE	    0263	 276
+DECODE4				  CODE	    026C	 281
+DECODE5				  CODE	    0275	 286
+DECODE6				  CODE	    027E	 292
+DECODE7				  CODE	    0287	 298
+DECODE8				  CODE	    0290	 304
+DECODE9				  CODE	    0299	 310
+DECODER				  CODE	    0248	 261
+DELAY				  CODE	    0390	 510
+DOWN				  CODE	    0061	  56
+DPH				  DATA	      83
+DPL				  DATA	      82
+EA				  BIT	      AF
+EMEKA				  CODE	    0057	  49
+ENTER				  CODE	    0089	  81
+ES				  BIT	      AC
+ET0				  BIT	      A9
+ET1				  BIT	      AB
+EX0				  BIT	      A8
+EX1				  BIT	      AA
+EXTI0				  CODE	    0003
+EXTI1				  CODE	    0013
+F0				  BIT	      D5
+IE				  DATA	      A8
+IE0				  BIT	      89
+IE1				  BIT	      8B
+INT0				  BIT	      B2
+INT1				  BIT	      B3
+IP				  DATA	      B8
+IT0				  BIT	      88
+IT1				  BIT	      8A
+JOS				  CODE	    0384	 499
+LETA				  CODE	    02C9	 361
+LETB				  CODE	    02CD	 365
+LETC				  CODE	    02D1	 369
+LETD				  CODE	    02D5	 373
+LETE				  CODE	    02D9	 377
+LETF				  CODE	    02DD	 381
+
+ASEM-51 V1.3                                        Copyright (c) 2002 by W.W. Heinz                                         PAGE 12
+
+
+
+SYMBOL				  TYPE     VALUE	LINE
+------------------------------------------------------------
+LETG				  CODE	    02E1	 385
+LETH				  CODE	    02E5	 389
+LETI				  CODE	    02E9	 393
+LETJ				  CODE	    02ED	 397
+LETL				  CODE	    02F1	 401
+LETN				  CODE	    02F5	 405
+LETO				  CODE	    02F9	 409
+LETP				  CODE	    02FD	 413
+LETQ				  CODE	    0301	 417
+LETR				  CODE	    0305	 421
+LETS				  CODE	    0309	 425
+LETT				  CODE	    030D	 429
+LETU				  CODE	    0311	 433
+LETY				  CODE	    0315	 437
+NUM0				  CODE	    029D	 315
+NUM1				  CODE	    02A1	 319
+NUM2				  CODE	    02A5	 323
+NUM3				  CODE	    02A9	 327
+NUM4				  CODE	    02AD	 332
+NUM5				  CODE	    02B1	 336
+NUM6				  CODE	    02B5	 340
+NUM7				  CODE	    02B9	 344
+NUM8				  CODE	    02BD	 348
+NUM9				  CODE	    02C1	 352
+OKIJA				  CODE	    0392	 512
+OV				  BIT	      D2
+P				  BIT	      D0
+P0				  DATA	      80
+P1				  DATA	      90
+P2				  DATA	      A0
+P3				  DATA	      B0
+PCON				  DATA	      87
+PLAY				  CODE	    0382	 497
+PLAY1				  CODE	    037B	 492
+PS				  BIT	      BC
+PSW				  DATA	      D0
+PT0				  BIT	      B9
+PT1				  BIT	      BB
+PX0				  BIT	      B8
+PX1				  BIT	      BA
+RB8				  BIT	      9A
+RD				  BIT	      B7
+RELEASE				  CODE	    0238	 251
+REN				  BIT	      9C
+RESET				  CODE	    0000
+REX				  CODE	    0071	  64
+RI				  BIT	      98
+RS0				  BIT	      D3
+RS1				  BIT	      D4
+RXD				  BIT	      B0
+SBUF				  DATA	      99
+SCON				  DATA	      98
+SCREEN				  CODE	    032C	 453
+SELECT				  CODE	    007B	  74
+SHIFTL				  CODE	    0319	 443
+SINT				  CODE	    0023
+
+ASEM-51 V1.3                                        Copyright (c) 2002 by W.W. Heinz                                         PAGE 13
+
+
+
+SYMBOL				  TYPE     VALUE	LINE
+------------------------------------------------------------
+SM0				  BIT	      9F
+SM1				  BIT	      9E
+SM2				  BIT	      9D
+SP				  DATA	      81
+SPACE				  CODE	    02C5	 356
+START				  CODE	    000F	  11
+STARTUP				  CODE	    0036	  30
+T0				  BIT	      B4
+T1				  BIT	      B5
+TB8				  BIT	      9B
+TCON				  DATA	      88
+TF0				  BIT	      8D
+TF1				  BIT	      8F
+TH0				  DATA	      8C
+TH1				  DATA	      8D
+TI				  BIT	      99
+TIMER0				  CODE	    000B
+TIMER1				  CODE	    001B
+TL0				  DATA	      8A
+TL1				  DATA	      8B
+TMOD				  DATA	      89
+TR0				  BIT	      8C
+TR1				  BIT	      8E
+TXD				  BIT	      B1
+UP				  CODE	    0047	  41
+WAIT				  CODE	    0238	 252
+WR				  BIT	      B6
